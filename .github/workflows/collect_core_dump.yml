@@ -17,7 +17,7 @@ jobs:
         sysctl -w kernel.core_pattern="/tmp/core.%t.%e.%p"
         cd src
         make
-        ll
+        ls -la
         pwd
         ./hellocoredump
 
