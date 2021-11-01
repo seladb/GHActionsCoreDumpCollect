@@ -1,0 +1,27 @@
+name: Collect Core Dump
+on: [push]
+jobs:
+  Collect-Core-Dump:
+    runs-on: ubuntu-latest
+    container: 
+      image: seladb/ubuntu2004
+      options: --privileged --ulimit core=-1
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build and run
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: |
+        sysctl -w kernel.core_pattern="/tmp/core.%t.%e.%p"
+        make
+        ./hellocoredump
+
+    - uses: actions/upload-artifact@master
+      if: ${{ failure() }}
+      with:
+        name: crash
+        path: |
+          /tmp/core*
+          /__w/GHActionsCoreDumpCollect/GHActionsCoreDumpCollect/hellocoredump
