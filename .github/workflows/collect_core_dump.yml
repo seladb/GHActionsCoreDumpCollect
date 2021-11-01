@@ -15,7 +15,7 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: |
         sysctl -w kernel.core_pattern="/tmp/core.%t.%e.%p"
-        make
+        make all
         ./hellocoredump
 
     - uses: actions/upload-artifact@master
